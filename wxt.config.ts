@@ -32,7 +32,7 @@ export default defineConfig({
         description: 'Open or close command bar',
       },
     },
-    host_permissions: ['<all_urls>'],
+    host_permissions: ['activeTab'],
   },
   vite: () => ({
     plugins: [tailwindcss()],
