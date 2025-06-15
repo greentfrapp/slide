@@ -10,7 +10,10 @@
             :style="{ opacity: scrollStep < 0 ? -0.3 * scrollStep : 1 }" />
         </button>
         <button @click="() => setScrollStep(0)">
-          <MouseIcon class="w-6 h-6" />
+          <PauseCircleIcon
+            v-if="scrollStep === 0 && storedScrollStep !== 0"
+            class="w-6 h-6" />
+          <MouseIcon v-else="scrollStep === 0" class="w-6 h-6" />
         </button>
         <button @click="() => setScrollStep(scrollStep + 1)">
           <ChevronDownIcon
@@ -24,19 +27,27 @@
 </template>
 <script setup lang="ts">
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/16/solid'
+import { PauseCircleIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 import MouseIcon from '@/components/MouseIcon.vue'
 
 function handleKey(event: KeyboardEvent) {
   if (event.key === 'ArrowDown') {
     event.preventDefault()
+    storedScrollStep.value = 0
     setScrollStep(scrollStep.value + 1)
   } else if (event.key === 'ArrowUp') {
     event.preventDefault()
+    storedScrollStep.value = 0
     setScrollStep(scrollStep.value - 1)
   } else if (event.key === ' ') {
     event.preventDefault()
-    setScrollStep(0)
+    if (scrollStep.value > 0) {
+      storedScrollStep.value = scrollStep.value
+      setScrollStep(0)
+    } else {
+      setScrollStep(storedScrollStep.value)
+    }
   } else if (event.key === 'Escape') {
     setScrollStep(0)
   }
@@ -44,6 +55,7 @@ function handleKey(event: KeyboardEvent) {
 
 let interval: any
 const scrollStep = ref(0)
+const storedScrollStep = ref(0)
 function setScrollStep(step: number) {
   scrollStep.value = step
   if (interval) {
