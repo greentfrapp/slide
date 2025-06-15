@@ -9,7 +9,7 @@
             :class="[scrollStep < 0 ? 'text-white' : 'text-neutral-700']"
             :style="{ opacity: scrollStep < 0 ? -0.3 * scrollStep : 1 }" />
         </button>
-        <button @click="() => setScrollStep(0)">
+        <button @click="playPauseScroll">
           <PauseCircleIcon
             v-if="scrollStep === 0 && storedScrollStep !== 0"
             class="w-6 h-6" />
@@ -42,14 +42,18 @@ function handleKey(event: KeyboardEvent) {
     setScrollStep(scrollStep.value - 1)
   } else if (event.key === ' ') {
     event.preventDefault()
-    if (scrollStep.value > 0) {
-      storedScrollStep.value = scrollStep.value
-      setScrollStep(0)
-    } else {
-      setScrollStep(storedScrollStep.value)
-    }
+    playPauseScroll()
   } else if (event.key === 'Escape') {
     setScrollStep(0)
+  }
+}
+
+function playPauseScroll() {
+  if (scrollStep.value !== 0) {
+    storedScrollStep.value = scrollStep.value
+    setScrollStep(0)
+  } else {
+    setScrollStep(storedScrollStep.value)
   }
 }
 
