@@ -37,30 +37,28 @@ export default defineContentScript({
       }
     }
 
+    function toggleUI() {
+      if (ui.mounted) {
+        ui.remove()
+        document.removeEventListener('keydown', handleEscape)
+        document.removeEventListener('click', handleClickOutside, true)
+      } else {
+        ui.mount()
+        document.addEventListener('keydown', handleEscape)
+        document.addEventListener('click', handleClickOutside, true)
+      }
+    }
+
     browser.runtime.onMessage.addListener((event) => {
-      if (event.type === 'COMMAND') {
+      if (event.type === 'MOUNT_UI') {
+        toggleUI()
+      } else if (event.type === 'COMMAND') {
         switch (event.command) {
           case 'openUp':
-            if (ui.mounted) {
-              ui.remove()
-              document.removeEventListener('keydown', handleEscape)
-              document.removeEventListener('click', handleClickOutside, true)
-            } else {
-              ui.mount()
-              document.addEventListener('keydown', handleEscape)
-              document.addEventListener('click', handleClickOutside, true)
-            }
+            toggleUI()
             break
           case 'openDown':
-            if (ui.mounted) {
-              ui.remove()
-              document.removeEventListener('keydown', handleEscape)
-              document.removeEventListener('click', handleClickOutside, true)
-            } else {
-              ui.mount()
-              document.addEventListener('keydown', handleEscape)
-              document.addEventListener('click', handleClickOutside, true)
-            }
+            toggleUI()
             break
           case 'close':
             if (ui.mounted) {

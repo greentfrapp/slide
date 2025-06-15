@@ -8,4 +8,11 @@ export default defineBackground(() => {
       })
     }
   })
+  ;(browser.action ?? browser.browserAction).onClicked.addListener(
+    async (tab) => {
+      if (tab.id) {
+        await browser.tabs.sendMessage(tab.id, { type: 'MOUNT_UI' })
+      }
+    },
+  )
 })
