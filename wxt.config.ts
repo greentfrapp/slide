@@ -7,9 +7,13 @@ export default defineConfig({
   modules: ['@wxt-dev/module-vue'],
   webExt: {
     // disabled: true,
-    startUrls: ['https://www.webtoons.com/en/action/return-of-the-blossoming-blade/spin-off-5/viewer?title_no=2849&episode_no=158'],
+    startUrls: [
+      'https://www.webtoons.com/en/action/return-of-the-blossoming-blade/spin-off-5/viewer?title_no=2849&episode_no=158',
+    ],
   },
   manifest: {
+    name: 'Slide',
+    description: 'Smooth auto scrolling',
     // Required, don't open popup, only action
     action: {},
     commands: {
