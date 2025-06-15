@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+    --tw-border-style: solid;
+}
+
+button {
+    cursor: pointer;
+}
